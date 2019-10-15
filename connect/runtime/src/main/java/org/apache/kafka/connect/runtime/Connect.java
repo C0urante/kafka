@@ -39,6 +39,7 @@ public class Connect {
     private final ShutdownHook shutdownHook;
 
     public Connect(Herder herder, RestServer rest) {
+        log.warn("THIS IS A PROTOTYPE BUILD FOR A BUG FIX AND SHOULD NOT BE USED IN PRODUCTION.");
         log.debug("Kafka Connect instance created");
         this.herder = herder;
         this.rest = rest;
