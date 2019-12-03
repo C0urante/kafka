@@ -28,9 +28,7 @@ base_dir=$(dirname $0)
 #cd -P deals with symlink from /bin to /usr/bin
 java_base_dir=$( cd -P "$base_dir/../share/java" && pwd )
 
-# confluent-common: required by kafka-serde-tools
-# kafka-serde-tools (e.g. Avro serializer): bundled with confluent-schema-registry package
-for library in "kafka" "confluent-common" "kafka-serde-tools" "monitoring-interceptors"; do
+for library in "kafka" "monitoring-interceptors"; do
   dir="$java_base_dir/$library"
   if [ -d "$dir" ]; then
     classpath_prefix="$CLASSPATH:"
