@@ -149,6 +149,9 @@
     <suppress checks="ClassFanOutComplexity"
               files="(WorkerSinkTask|WorkerSourceTask)Test.java"/>
 
+    <suppress checks="JavaNCSS"
+              files="DistributedHerderTest.java"/>
+
     <!-- Streams -->
     <suppress checks="ClassFanOutComplexity"
               files="(TopologyBuilder|KafkaStreams|KStreamImpl|KTableImpl|StreamThread|StreamTask).java"/>
