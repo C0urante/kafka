@@ -1903,6 +1903,8 @@ public class DistributedHerderTest {
         herder.tick();
 
         assertTrue(pollTimeout.getValue() <= DistributedConfig.INTER_WORKER_KEY_TTL_MS_MS_DEFAULT);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -1937,6 +1939,8 @@ public class DistributedHerderTest {
         herder.tick();
         assertTrue(firstPollTimeout.getValue() <= DistributedConfig.INTER_WORKER_KEY_TTL_MS_MS_DEFAULT);
         herder.tick();
+
+        PowerMock.verifyAll();
     }
 
     @Test
