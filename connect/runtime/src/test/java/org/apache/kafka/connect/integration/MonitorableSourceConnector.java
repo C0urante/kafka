@@ -34,8 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * A source connector that is used in Apache Kafka integration tests to verify the behavior of
@@ -45,6 +49,7 @@ import java.util.stream.LongStream;
  */
 public class MonitorableSourceConnector extends SampleSourceConnector {
     private static final Logger log = LoggerFactory.getLogger(MonitorableSourceConnector.class);
+    private static final Set<String> ACTIVE_CONNECTOR_INSTANCES = new ConcurrentSkipListSet<>();
 
     public static final String TOPIC_CONFIG = "topic";
     private String connectorName;
@@ -60,6 +65,10 @@ public class MonitorableSourceConnector extends SampleSourceConnector {
         connectorHandle.recordConnectorStart();
         if (Boolean.parseBoolean(props.getOrDefault("connector.start.inject.error", "false"))) {
             throw new RuntimeException("Injecting errors during connector start");
+        }
+        boolean duplicated = !ACTIVE_CONNECTOR_INSTANCES.add(connectorName);
+        if (Boolean.parseBoolean(props.getOrDefault("fail.on.duplicate.instances", "false"))) {
+            assertFalse("Multiple instances of connector " + connectorName + " appear to be running at the same time", duplicated);
         }
     }
 
@@ -84,6 +93,7 @@ public class MonitorableSourceConnector extends SampleSourceConnector {
     public void stop() {
         log.info("Stopped {} connector {}", this.getClass().getSimpleName(), connectorName);
         connectorHandle.recordConnectorStop();
+        ACTIVE_CONNECTOR_INSTANCES.remove(connectorName);
     }
 
     @Override
@@ -93,6 +103,8 @@ public class MonitorableSourceConnector extends SampleSourceConnector {
     }
 
     public static class MonitorableSourceTask extends SourceTask {
+        private static final Set<String> ACTIVE_TASK_INSTANCES = new ConcurrentSkipListSet<>();
+
         private String connectorName;
         private String taskId;
         private String topicName;
@@ -126,6 +138,10 @@ public class MonitorableSourceConnector extends SampleSourceConnector {
             taskHandle.recordTaskStart();
             if (Boolean.parseBoolean(props.getOrDefault("task-" + taskId + ".start.inject.error", "false"))) {
                 throw new RuntimeException("Injecting errors during task start");
+            }
+            boolean duplicated = !ACTIVE_TASK_INSTANCES.add(taskId);
+            if (Boolean.parseBoolean(props.getOrDefault("fail.on.duplicate.instances", "false"))) {
+                assertFalse("Multiple instances of task " + taskId + " appear to be running at the same time", duplicated);
             }
         }
 
@@ -171,6 +187,12 @@ public class MonitorableSourceConnector extends SampleSourceConnector {
             log.info("Stopped {} task {}", this.getClass().getSimpleName(), taskId);
             stopped = true;
             taskHandle.recordTaskStop();
+            ACTIVE_TASK_INSTANCES.remove(taskId);
         }
+    }
+
+    public static void clearActiveInstances() {
+        ACTIVE_CONNECTOR_INSTANCES.clear();
+        MonitorableSourceTask.ACTIVE_TASK_INSTANCES.clear();
     }
 }
