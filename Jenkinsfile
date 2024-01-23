@@ -19,16 +19,16 @@
 
 def doValidation() {
   // Run all the tasks associated with `check` except for `test` - the latter is executed via `doTest`
-//  sh """
-//    ./retry_zinc ./gradlew -PscalaVersion=$SCALA_VERSION clean check -x test \
-//        --profile --continue -PxmlSpotBugsReport=true -PkeepAliveMode="session"
-//  """
+  sh """
+    ./retry_zinc ./gradlew -PscalaVersion=$SCALA_VERSION clean check -x test \
+        --profile --continue -PxmlSpotBugsReport=true -PkeepAliveMode="session"
+  """
 }
 
 def doTest(env, target = ":connect:runtime:unitTest") {
-//  sh """./gradlew -PscalaVersion=$SCALA_VERSION ${target} \
-//      --profile --continue -PkeepAliveMode="session" -PtestLoggingEvents=started,passed,skipped,failed \
-//      -PignoreFailures=true -PmaxParallelForks=2 -PmaxTestRetries=1 -PmaxTestRetryFailures=10"""
+  sh """./gradlew -PscalaVersion=$SCALA_VERSION ${target} \
+      --profile --continue -PkeepAliveMode="session" -PtestLoggingEvents=started,passed,skipped,failed \
+      -PignoreFailures=true -PmaxParallelForks=2 -PmaxTestRetries=1 -PmaxTestRetryFailures=10"""
   junit stdioRetention: 'failed', skipPublishingChecks: true, testResults: '**/build/test-results/**/TEST-*.xml'
 }
 
