@@ -660,11 +660,19 @@ public class DistributedHerderTest {
     }
 
     @Test
-    public void testFailure() {
+    public void testVerboseFailure() {
         Logger log = LoggerFactory.getLogger(DistributedHerderTest.class);
         for (int i = 0; i < 100_000; i++)
             log.info("Emitting line {}", i);
         assertFalse(true);
+    }
+
+    @Test
+    public void testVerboseSuccess() {
+        Logger log = LoggerFactory.getLogger(DistributedHerderTest.class);
+        for (int i = 0; i < 100_000; i++)
+            log.info("Emitting line {}", i);
+        assertFalse(false);
     }
 
     @Test
