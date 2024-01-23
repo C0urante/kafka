@@ -38,10 +38,10 @@ pipeline {
   stages {
     stage('Build') {
 
-      tools {
-        jdk 'jdk_1.8_latest'
-        maven 'maven_3_latest'
-      }
+//      tools {
+//        jdk 'jdk_1.8_latest'
+//        maven 'maven_3_latest'
+//      }
       options {
         timeout(time: 10, unit: 'MINUTES')
         timestamps()
