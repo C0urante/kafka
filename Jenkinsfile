@@ -44,7 +44,7 @@ pipeline {
 //      }
       options {
         timeout(time: 10, unit: 'MINUTES')
-        timestamps()
+//        timestamps()
       }
       environment {
         SCALA_VERSION = 2.12
