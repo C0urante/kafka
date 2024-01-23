@@ -34,24 +34,25 @@ def doTest(env, target = ":connect:runtime:unitTest") {
 
 pipeline {
   agent none
-  
+
   stages {
     stage('Build') {
 
-    tools {
-      jdk 'jdk_1.8_latest'
-      maven 'maven_3_latest'
-    }
-    options {
-      timeout(time: 8, unit: 'HOURS')
-      timestamps()
-    }
-    environment {
-      SCALA_VERSION=2.12
-    }
-    steps {
-      doValidation()
-      doTest(env)
+      tools {
+        jdk 'jdk_1.8_latest'
+        maven 'maven_3_latest'
+      }
+      options {
+        timeout(time: 8, unit: 'HOURS')
+        timestamps()
+      }
+      environment {
+        SCALA_VERSION = 2.12
+      }
+      steps {
+        doValidation()
+        doTest(env)
+      }
     }
   }
 }
