@@ -472,6 +472,12 @@ subprojects {
     }
     logTestStdout.rehydrate(delegate, owner, this)()
 
+    reports {
+      junitXml {
+        outputPerTestCase = true
+      }
+    }
+
     exclude testsToExclude
 
     if (shouldUseJUnit5) {
@@ -514,6 +520,12 @@ subprojects {
       displayGranularity = 0
     }
     logTestStdout.rehydrate(delegate, owner, this)()
+
+    reports {
+      junitXml {
+        outputPerTestCase = true
+      }
+    }
 
     exclude testsToExclude
 
