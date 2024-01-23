@@ -34,6 +34,7 @@ def doTest(env, target = ":connect:runtime:unitTest") {
 
 pipeline {
 //  agent none
+  agent any
 
   stages {
     stage('Build') {
