@@ -43,7 +43,7 @@ pipeline {
         maven 'maven_3_latest'
       }
       options {
-        timeout(time: 8, unit: 'HOURS')
+        timeout(time: 10, unit: 'MINUTES')
         timestamps()
       }
       environment {
