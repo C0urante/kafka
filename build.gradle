@@ -443,6 +443,12 @@ subprojects {
     if (shouldUseJUnit5)
       useJUnitPlatform()
 
+    reports {
+      junitXml {
+        outputPerTestCase = true
+      }
+    }
+
     retry {
       maxRetries = userMaxTestRetries
       maxFailures = userMaxTestRetryFailures
