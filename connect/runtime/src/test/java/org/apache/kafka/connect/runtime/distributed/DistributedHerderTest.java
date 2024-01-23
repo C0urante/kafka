@@ -78,6 +78,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import java.util.ArrayList;
@@ -655,6 +657,14 @@ public class DistributedHerderTest {
         verify(member, times(2)).poll(anyLong(), any());
 
         verifyNoMoreInteractions(member, statusBackingStore, configBackingStore, worker);
+    }
+
+    @Test
+    public void testFailure() {
+        Logger log = LoggerFactory.getLogger(DistributedHerderTest.class);
+        for (int i = 0; i < 100_000; i++)
+            log.info("Emitting line {}", i);
+        assertFalse(true);
     }
 
     @Test
